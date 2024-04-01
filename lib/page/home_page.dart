@@ -14,13 +14,11 @@ class _HomePageState extends State<HomePage> {
 
   HomeController homeController = Get.put(HomeController());
 
-  late TextEditingController _textEditingController;
 
   @override
   void initState() {
     super.initState();
 
-    _textEditingController = TextEditingController(text: "");
   }
 
   @override
@@ -44,29 +42,28 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
-                      controller: _textEditingController,
+                      controller: homeController.searchTextController,
                       textInputAction: TextInputAction.search,
                       onFieldSubmitted: (String text) {
-                        homeController.search(text);
+                        homeController.search();
                       },
                       onChanged: (String text) {
                         homeController.setSearchText(text);
                       },
                       decoration: const InputDecoration(
                         hintText: "검색어를 입력하세요",
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
+                        // border: InputBorder.none,
+                        // focusedBorder: InputBorder.none,
+                        // enabledBorder: InputBorder.none,
+                        // errorBorder: InputBorder.none,
+                        // disabledBorder: InputBorder.none,
                       ),
                     ),
                   ),
                   // if (_.searchRecords.isNotEmpty || _.searchText.isNotEmpty)
                     InkWell(
                       onTap: () {
-                        _textEditingController.text = '';
-                        // appController.clearSearchRecords();
+                        homeController.clearSearchText();
                       },
                       child: const Icon(Icons.close, size: 20),
 

@@ -1,17 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../service/http_service.dart';
 
 class HomeController extends GetxController {
 
+  TextEditingController searchTextController = TextEditingController(text: "");
 
-  fetchImages() {
-    HttpService.fetchImages();
+
+
+  void search() {
+    HttpService.fetchImages(searchText: searchTextController.text);
   }
 
-  void search(String text) {}
+  void setSearchText(String text) {
+    searchTextController.text = text;
+    update();
+  }
 
-  void setSearchText(String text) {}
+  void clearSearchText() {
+    searchTextController.text = "";
+    update();
+  }
 
 }
