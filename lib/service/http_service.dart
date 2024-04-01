@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:searchimgapp/data/response/documents_response.dart';
 
 class HttpService {
 
@@ -23,16 +24,15 @@ class HttpService {
   }
 
 
-  static Future<String> fetchImages({required String searchText}) async {
+  static Future<DocumentsResponse> fetchImages({required String searchText}) async {
 
     Map<String, dynamic> queryParams = {"query" : searchText};
 
 
-    Response response;
-    response = await getDio().get(IMG_SEARCH_URL, queryParameters: queryParams);
+    Response response = await getDio().get(IMG_SEARCH_URL, queryParameters: queryParams);
 
 
-    return response.data.toString();
+    return DocumentsResponse.fromJson(response.data);
 
   }
 
