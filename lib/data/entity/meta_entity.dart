@@ -4,9 +4,9 @@ part 'meta_entity.g.dart';
 
 @JsonSerializable()
 class MetaEntity {
-  int total_count;
-  int pageable_count;
-  bool is_end;
+  final int total_count;
+  final int pageable_count;
+  final bool is_end;
 
   MetaEntity({required this.total_count, required this.pageable_count, required this.is_end});
 

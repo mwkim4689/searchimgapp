@@ -16,6 +16,7 @@ DocumentEntity _$DocumentEntityFromJson(Map<String, dynamic> json) =>
       display_sitename: json['display_sitename'] as String,
       doc_url: json['doc_url'] as String,
       datetime: json['datetime'] as String,
+      isFavorite: json['isFavorite'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$DocumentEntityToJson(DocumentEntity instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$DocumentEntityToJson(DocumentEntity instance) =>
       'display_sitename': instance.display_sitename,
       'doc_url': instance.doc_url,
       'datetime': instance.datetime,
+      'isFavorite': instance.isFavorite,
     };

@@ -87,4 +87,12 @@ class HomeController extends GetxController {
     searchTextController.text = "";
     update();
   }
+
+  void setFavorite({required DocumentEntity document}) {
+    document.isFavorite ^= true;
+    update();
+
+
+
+  }
 }

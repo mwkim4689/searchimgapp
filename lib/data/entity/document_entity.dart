@@ -4,14 +4,15 @@ part 'document_entity.g.dart';
 
 @JsonSerializable()
 class DocumentEntity {
-  String collection;
-  String thumbnail_url;
-  String image_url;
-  int width;
-  int height;
-  String display_sitename;
-  String doc_url;
-  String datetime;
+  final String collection;
+  final String thumbnail_url;
+  final String image_url;
+  final int width;
+  final int height;
+  final String display_sitename;
+  final String doc_url;
+  final String datetime;
+  bool isFavorite;
 
   DocumentEntity({
     required this.collection,
@@ -22,6 +23,7 @@ class DocumentEntity {
     required this.display_sitename,
     required this.doc_url,
     required this.datetime,
+    this.isFavorite = false,
   });
 
   factory DocumentEntity.fromJson(Map<String, dynamic> json) =>

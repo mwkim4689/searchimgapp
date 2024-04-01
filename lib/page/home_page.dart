@@ -1,6 +1,6 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
 import 'package:searchimgapp/page/document_detail_page.dart';
@@ -17,14 +17,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   HomeController homeController = Get.put(HomeController());
 
-
-
   @override
   void initState() {
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,21 +74,19 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Expanded(
-                child: GetBuilder<HomeController>(
-                  builder: (_) {
-                    debugPrint("Listview.separated before");
-                    return ListView.separated(
-                      controller: _.scrollController,
-                      itemCount: _.documentList.length,
-                      itemBuilder: (BuildContext context, int index){
-                        return documentItem(_, index);
-                      },
-                      separatorBuilder: (BuildContext context, int index){
-                        return const SizedBox(height: 20);
-                      },
-                    );
-                  }
-                ),
+                child: GetBuilder<HomeController>(builder: (_) {
+                  debugPrint("Listview.separated before");
+                  return ListView.separated(
+                    controller: _.scrollController,
+                    itemCount: _.documentList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return documentItem(_, index);
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const SizedBox(height: 20);
+                    },
+                  );
+                }),
               )
             ],
           ),
@@ -102,20 +96,35 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget documentItem(HomeController _, int index) {
-
     DocumentEntity document = _.documentList[index];
 
     return InkWell(
-      onTap: (){
+      onTap: () {
         Get.to(DocumentDetailPage(document: document));
       },
       child: Column(
         children: [
           Image.network(document.image_url),
-          Text(document.display_sitename)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  child: Text(
+                document.display_sitename,
+                textAlign: TextAlign.center,
+              )),
+              InkWell(
+                onTap: () {
+                  homeController.setFavorite(document: document);
+                },
+                child: document.isFavorite
+                    ? Icon(Icons.star)
+                    : Icon(Icons.star_border),
+              )
+            ],
+          )
         ],
       ),
     );
-
   }
 }
