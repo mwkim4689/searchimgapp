@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'controller/main_tab_controller.dart';
+
+class MainTab extends StatefulWidget {
+  const MainTab({super.key});
+
+  @override
+  State<MainTab> createState() => _MainTabState();
+}
+
+class _MainTabState extends State<MainTab> {
+
+  MainTabController mainTabController = Get.put(MainTabController());
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<MainTabController>(
+      builder: (_) {
+        return Scaffold(
+          body: _.tabs[_.pageIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            showUnselectedLabels: true,
+            selectedFontSize: 11,
+            unselectedFontSize: 11,
+            type: BottomNavigationBarType.fixed,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                label: "검색",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.analytics_outlined),
+                label: "즐겨찾기",
+              ),
+            ],
+            currentIndex: mainTabController.pageIndex,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: const Color(0xFFCBCBCB),
+            onTap: mainTabController.setPageIndex,
+          ),
+        );
+      }
+    );
+  }
+}
