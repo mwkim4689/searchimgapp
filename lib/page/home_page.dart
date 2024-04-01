@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
+import 'package:searchimgapp/page/document_detail_page.dart';
 
 import '../data/entity/document_entity.dart';
 
@@ -104,7 +105,10 @@ class _HomePageState extends State<HomePage> {
 
     DocumentEntity document = _.documentList[index];
 
-    return Container(
+    return InkWell(
+      onTap: (){
+        Get.to(DocumentDetailPage(document: document));
+      },
       child: Column(
         children: [
           Image.network(document.image_url),
