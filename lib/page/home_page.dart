@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                         controller: homeController.searchTextController,
                         textInputAction: TextInputAction.search,
                         onFieldSubmitted: (String text) {
-                          homeController.search();
+                          homeController.search(isInitialSearch: true);
                         },
                         onChanged: (String text) {
                           homeController.setSearchText(text);
