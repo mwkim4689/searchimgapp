@@ -14,6 +14,7 @@ class _DetailPageState extends State<DocumentDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: Center(
           child: Image.network(widget.document.image_url),
