@@ -10,6 +10,16 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: Text("즐겨찾기 페이지"),
+          ),
+        ],
+      ),
+    );
   }
 }

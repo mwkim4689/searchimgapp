@@ -3,11 +3,15 @@ import 'package:get/get.dart';
 
 import '../service/http_service.dart';
 
-class SearchController extends GetxController {
+class HomeController extends GetxController {
 
 
   fetchImages() {
     HttpService.fetchImages();
   }
+
+  void search(String text) {}
+
+  void setSearchText(String text) {}
 
 }
