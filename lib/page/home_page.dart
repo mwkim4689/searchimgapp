@@ -1,7 +1,11 @@
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
+
+import '../data/entity/document_entity.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,14 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   HomeController homeController = Get.put(HomeController());
-
 
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -61,20 +62,48 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   // if (_.searchRecords.isNotEmpty || _.searchText.isNotEmpty)
-                    InkWell(
-                      onTap: () {
-                        homeController.clearSearchText();
-                      },
-                      child: const Icon(Icons.close, size: 20),
-
-                    ),
+                  InkWell(
+                    onTap: () {
+                      homeController.clearSearchText();
+                    },
+                    child: const Icon(Icons.close, size: 20),
+                  ),
                 ],
               ),
             ),
-
+            Expanded(
+              child: GetBuilder<HomeController>(
+                builder: (_) {
+                  return ListView.separated(
+                    itemCount: _.documentList.length,
+                    itemBuilder: (BuildContext context, int index){
+                      return documentItem(_, index);
+                    },
+                    separatorBuilder: (BuildContext context, int index){
+                      return const SizedBox(height: 20);
+                    },
+                  );
+                }
+              ),
+            )
           ],
         ),
       ),
     );
+  }
+
+  documentItem(HomeController _, int index) {
+
+    DocumentEntity document = _.documentList[index];
+
+    return Container(
+      child: Column(
+        children: [
+          Image.network(document.image_url),
+          Text(document.display_sitename)
+        ],
+      ),
+    );
+
   }
 }

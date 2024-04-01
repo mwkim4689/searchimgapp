@@ -8,8 +8,7 @@ part of 'documents_response.dart';
 
 DocumentsResponse _$DocumentsResponseFromJson(Map<String, dynamic> json) =>
     DocumentsResponse(
-      metaEntity:
-          MetaEntity.fromJson(json['metaEntity'] as Map<String, dynamic>),
+      meta: MetaEntity.fromJson(json['meta'] as Map<String, dynamic>),
       documents: (json['documents'] as List<dynamic>)
           .map((e) => DocumentEntity.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -17,6 +16,6 @@ DocumentsResponse _$DocumentsResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$DocumentsResponseToJson(DocumentsResponse instance) =>
     <String, dynamic>{
-      'metaEntity': instance.metaEntity,
+      'meta': instance.meta,
       'documents': instance.documents,
     };

@@ -7,10 +7,10 @@ part 'documents_response.g.dart';
 
 @JsonSerializable()
 class DocumentsResponse {
-  MetaEntity metaEntity;
+  MetaEntity meta;
   List<DocumentEntity> documents;
 
-  DocumentsResponse({required this.metaEntity, required this.documents,});
+  DocumentsResponse({required this.meta, required this.documents,});
 
   factory DocumentsResponse.fromJson(Map<String, dynamic> json) => _$DocumentsResponseFromJson(json);
 
