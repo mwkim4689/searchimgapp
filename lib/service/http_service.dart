@@ -5,9 +5,9 @@ class HttpService {
   static String IMG_SEARCH_URL = "https://dapi.kakao.com/v2/search/image";
 
   static Dio getDio() {
-    String REST_API_KEY = "bc44da37a34a84e4e8e5ec5a7727429a";
+    String restApiKey = "bc44da37a34a84e4e8e5ec5a7727429a";
 
-    Map<String, dynamic> headers = {"Authorization": "KakaoAK $REST_API_KEY"};
+    Map<String, dynamic> headers = {"Authorization": "KakaoAK $restApiKey"};
 
     BaseOptions option = BaseOptions(
       headers: headers,

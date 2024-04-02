@@ -23,8 +23,6 @@ class HomeController extends GetxController {
   int pageSize = 5;
 
 
-  /// 스크롤 맨 아래로 갔을 때, search를 호출해서 페이징 되도록 함
-
   void setSearchText(String text) {
     searchTextController.text = text;
     update();

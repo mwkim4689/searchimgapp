@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   scrollListener() async {
+    /// 스크롤 맨 아래로 갔을 때, search를 호출해서 페이징 되도록 함
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       SearchResult result = SearchResult.fail;
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /// 포커스 해제하여 키보드를 숨깁니다.
+  /// 포커스 해제하여 키보드를 숨김.
   void _onTapOutside() {
     searchFieldFocusNode.unfocus(); // 포커스 해제
   }

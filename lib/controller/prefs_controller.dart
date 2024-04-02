@@ -16,10 +16,8 @@ class PrefsController extends GetxController {
     List<DocumentEntity> favoriteDocs = await getFavoriteDocsFromPrefs();
 
     if (isFavorite == true) {
-      // favoriteDocs.add(document);
       favoriteDocs.insert(0,document.copyWith());
     } else {
-      // favoriteDocs.remove(document);
       favoriteDocs.removeWhere((element) => element.image_url == document.image_url);
     }
 
