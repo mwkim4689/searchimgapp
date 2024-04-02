@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -125,7 +126,14 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             Get.to(DocumentDetailPage(document: document));
           },
-          child: Image.network(document.image_url),
+          child: CachedNetworkImage(
+            imageUrl: document.image_url,
+            errorWidget: (context, url, error) => Container(
+                height: 100,
+                width: double.infinity,
+                color: Colors.black.withOpacity(0.05),
+                child: const Icon(Icons.error)),
+          ),
         ),
         const SizedBox(height: 6),
         Row(

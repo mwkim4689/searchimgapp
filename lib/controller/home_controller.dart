@@ -21,7 +21,7 @@ class HomeController extends GetxController {
   bool loading = false;
 
   int pageNum = 1;
-  int pageSize = 3;
+  int pageSize = 5;
 
   @override
   void onInit() {
