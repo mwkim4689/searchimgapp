@@ -26,34 +26,39 @@ class _FavoritePageState extends State<FavoritePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: GetBuilder<FavoriteController>(builder: (_) {
-        if (_.loading == true) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                children: [
-                  Expanded(
-                      child: ListView.separated(
-                    // controller: _.scrollController,
-                    itemCount: _.favoriteDocs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return documentItem(_, index);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(height: 20);
-                    },
-                  ))
-                ],
+        return Scaffold(
+          body: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: ListView.separated(
+                      // controller: _.scrollController,
+                      itemCount: _.favoriteDocs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return documentItem(_, index);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(height: 20);
+                      },
+                    ))
+                  ],
+                ),
               ),
-            ),
-          );
-        }
+              if (_.loading == true)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.white.withOpacity(0.2),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
       }),
     );
   }
