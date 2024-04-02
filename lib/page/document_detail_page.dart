@@ -15,11 +15,9 @@ class _DetailPageState extends State<DocumentDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SafeArea(
-        child: Center(
-          child: Image.network(widget.document.image_url),
+      body: Center(
+        child: Image.network(widget.document.image_url),
 
-        ),
       ),
     );
   }

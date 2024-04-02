@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:searchimgapp/controller/favorite_controller.dart';
 import 'package:searchimgapp/controller/prefs_controller.dart';
 import 'package:searchimgapp/data/response/documents_response.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/entity/document_entity.dart';
 import '../data/entity/meta_entity.dart';
@@ -24,15 +23,12 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    debugPrint("HomeController onInit");
     scrollController.addListener(scrollListener);
   }
 
   scrollListener() {
-    debugPrint("scrollListener called");
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      debugPrint("scrollListener, in");
       search(isInitialSearch: false);
     }
   }
@@ -52,12 +48,13 @@ class HomeController extends GetxController {
       documentList.clear();
       pageNum = 1;
     } else if (meta?.is_end ?? true) {
-      return; // 마지막 페이지에 도달했으면 더 이상 데이터를 불러오지 않음
+      /// 마지막 페이지에 도달했으면 더 이상 데이터를 불러오지 않음
+      return;
     } else {
-      pageNum++; // 더 보기 요청 시 페이지 번호 증가
+      /// 더 보기 요청 시 페이지 번호 증가
+      pageNum++;
     }
 
-    debugPrint("HomeController, search called, pageNum: $pageNum");
 
     DocumentsResponse documentsResponse = await HttpService.fetchImages(
         searchText: searchTextController.text, page: pageNum, size: pageSize);

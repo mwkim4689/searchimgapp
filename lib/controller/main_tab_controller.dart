@@ -15,7 +15,6 @@ class MainTabController extends GetxController {
 
 
   setPageIndex(int index) {
-    debugPrint('setPageIndex : $index');
     pageIndex = index;
     currentPage = tabs[index];
     update();

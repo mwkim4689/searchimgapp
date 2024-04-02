@@ -18,6 +18,8 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   void initState() {
     super.initState();
+
+    favoriteController.fetchFavoriteDcosFromPrefs();
   }
 
   @override
@@ -34,32 +36,35 @@ class _FavoritePageState extends State<FavoritePage> {
             );
           }
 
-
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text("즐겨찾기 페이지"),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                        // controller: _.scrollController,
-                        itemCount: _.favoriteDocs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return documentItem(_, index);
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(height: 20);
-                        },
-                      )
-                  )
-                ],
+          else {
+            return Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: Text("즐겨찾기 페이지"),
+                    ),
+                    Expanded(
+                        child: ListView.separated(
+                          // controller: _.scrollController,
+                          itemCount: _.favoriteDocs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return documentItem(_, index);
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(height: 20);
+                          },
+                        )
+                    )
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          }
+
+
         }
       ),
     );

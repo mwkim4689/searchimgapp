@@ -76,7 +76,6 @@ class _HomePageState extends State<HomePage> {
               ),
               Expanded(
                 child: GetBuilder<HomeController>(builder: (_) {
-                  debugPrint("Listview.separated before");
                   return ListView.separated(
                     controller: _.scrollController,
                     itemCount: _.documentList.length,

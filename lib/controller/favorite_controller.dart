@@ -13,13 +13,6 @@ class FavoriteController extends GetxController {
 
   bool loading = false;
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    fetchFavoriteDcosFromPrefs();
-  }
-
   Future<void> fetchFavoriteDcosFromPrefs() async {
     loading = true;
     update();
