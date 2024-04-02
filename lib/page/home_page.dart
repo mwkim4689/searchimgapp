@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
 
           },
           child: CachedNetworkImage(
-            width: Get.width,
+            width: double.infinity,
             fit: BoxFit.fitWidth,
             imageUrl: document.image_url,
             errorWidget: (context, url, error) => Container(

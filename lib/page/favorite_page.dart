@@ -77,6 +77,8 @@ class _FavoritePageState extends State<FavoritePage> {
             );
           },
           child: CachedNetworkImage(
+            width: double.infinity,
+            fit: BoxFit.fitWidth,
             imageUrl: document.image_url,
             errorWidget: (context, url, error) => Container(
                 height: 100,

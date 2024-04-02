@@ -26,7 +26,7 @@ class _DetailPageState extends State<DocumentDetailPage> {
         children: [
           Expanded(
             child: CachedNetworkImage(
-              width: Get.width,
+              width: double.infinity,
               fit: BoxFit.fitWidth,
               imageUrl: widget.document.image_url,
               errorWidget: (context, url, error) => Container(
