@@ -27,11 +27,11 @@ class _MainTabState extends State<MainTab> {
             type: BottomNavigationBarType.fixed,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.list),
+                icon: Icon(Icons.search),
                 label: "검색",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.analytics_outlined),
+                icon: Icon(Icons.star_border_rounded),
                 label: "즐겨찾기",
               ),
             ],
