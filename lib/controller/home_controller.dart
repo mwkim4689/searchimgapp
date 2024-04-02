@@ -28,6 +28,7 @@ class HomeController extends GetxController {
     scrollController.addListener(scrollListener);
   }
 
+  /// 스크롤 맨 아래로 갔을 때, search를 호출해서 페이징 되도록 함
   scrollListener() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
@@ -85,6 +86,7 @@ class HomeController extends GetxController {
 
   }
 
+  /// 검색한 후 리스팅 할 때, 즐겨찾기에 저장된 문서랑 같은게 있을 때, favorite 추가
   updateFavorite() async {
     List<DocumentEntity> favoriteDocs =
         await Get.find<PrefsController>().getFavoriteDocsFromPrefs();
