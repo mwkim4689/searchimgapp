@@ -12,7 +12,7 @@ class MainTab extends StatefulWidget {
 
 class _MainTabState extends State<MainTab> {
 
-  MainTabController mainTabController = Get.put(MainTabController());
+  MainTabController mainTabController = Get.find();
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:searchimgapp/controller/favorite_controller.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
 import 'package:searchimgapp/main_tab.dart';
 
+import 'controller/main_tab_controller.dart';
 import 'controller/prefs_controller.dart';
 
 void main() {
@@ -17,6 +18,7 @@ void initGetX() {
   Get.put(HomeController());
   Get.put(FavoriteController());
   Get.put(PrefsController());
+  Get.put(MainTabController());
 }
 
 class MyApp extends StatelessWidget {
