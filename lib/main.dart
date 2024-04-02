@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:searchimgapp/controller/favorite_controller.dart';
+import 'package:searchimgapp/controller/home_controller.dart';
 import 'package:searchimgapp/main_tab.dart';
 
+import 'controller/prefs_controller.dart';
+
 void main() {
+
+  initGetX();
+
   runApp(const MyApp());
+}
+
+void initGetX() {
+  Get.put(HomeController());
+  Get.put(FavoriteController());
+  Get.put(PrefsController());
 }
 
 class MyApp extends StatelessWidget {

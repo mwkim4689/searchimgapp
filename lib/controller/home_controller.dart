@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:searchimgapp/controller/favorite_controller.dart';
+import 'package:searchimgapp/controller/prefs_controller.dart';
 import 'package:searchimgapp/data/response/documents_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,14 +11,10 @@ import '../data/entity/document_entity.dart';
 import '../data/entity/meta_entity.dart';
 import '../service/http_service.dart';
 
-
-
 class HomeController extends GetxController {
   TextEditingController searchTextController = TextEditingController(text: "");
 
-  ScrollController scrollController = ScrollController(
-    // keepScrollOffset: false,
-  );
+  ScrollController scrollController = ScrollController();
 
   List<DocumentEntity> documentList = [];
   MetaEntity? meta;
@@ -39,7 +37,6 @@ class HomeController extends GetxController {
     }
   }
 
-
   void setSearchText(String text) {
     searchTextController.text = text;
     update();
@@ -49,7 +46,6 @@ class HomeController extends GetxController {
     searchTextController.text = "";
     update();
   }
-
 
   Future<void> search({bool isInitialSearch = false}) async {
     if (isInitialSearch) {
@@ -63,8 +59,8 @@ class HomeController extends GetxController {
 
     debugPrint("HomeController, search called, pageNum: $pageNum");
 
-    DocumentsResponse documentsResponse =
-    await HttpService.fetchImages(searchText: searchTextController.text, page: pageNum, size: pageSize);
+    DocumentsResponse documentsResponse = await HttpService.fetchImages(
+        searchText: searchTextController.text, page: pageNum, size: pageSize);
 
     meta = documentsResponse.meta;
 
@@ -79,73 +75,43 @@ class HomeController extends GetxController {
     update();
   }
 
-
   updateFavorite() async {
+    List<DocumentEntity> favoriteDocs =
+        await Get.find<PrefsController>().getFavoriteDocsFromPrefs();
 
-    List<DocumentEntity> favoriteDocs = await getFavoriteDocsFromPrefs();
-
-    for(DocumentEntity doc in documentList) {
-      for(DocumentEntity favDoc in favoriteDocs) {
-        if(doc.image_url == favDoc.image_url) {
+    for (DocumentEntity doc in documentList) {
+      for (DocumentEntity favDoc in favoriteDocs) {
+        if (doc.image_url == favDoc.image_url) {
           doc.isFavorite = true;
         }
       }
-
     }
-
   }
 
+  Future<void> setFavorite(
+      {required DocumentEntity document, required bool isFavorite}) async {
+
+    /// Home Page에서 즐겨찾기 On/Off
+    document.isFavorite = isFavorite;
 
 
-  Future<void> setFavorite({required DocumentEntity document}) async {
-    document.isFavorite ^= true;
+    /// 로컬에 favorite document list 상태 업데이트
+    Get.find<PrefsController>()
+        .setPrefsFavorite(document: document, isFavorite: isFavorite);
 
-    List<DocumentEntity> favoriteDocs = await getFavoriteDocsFromPrefs();
 
-
-    if(document.isFavorite == true) {
-      favoriteDocs.add(document);
+    /// Favorite Page 에서 즐겨찾기기 추가
+    FavoriteController favoriteController = Get.find<FavoriteController>();
+    if (isFavorite == true) {
+      favoriteController.favoriteDocs.add(document.copyWith());
     } else {
-      favoriteDocs.remove(document);
+      favoriteController.favoriteDocs
+          .removeWhere((element) => element.image_url == document.image_url);
     }
-
-    if(favoriteDocs.isNotEmpty) {
-
-      String favoriteDocsStr = jsonEncode(favoriteDocs);
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("favorite_docs", favoriteDocsStr);
-    }
-
-
-
-
-    debugPrint("favoriteDocs, ${favoriteDocs.first.isFavorite}");
-    // debugPrint("favoriteDocsVar, ${favoriteDocsVar.toString()}");
-    debugPrint("favoriteDocs, ${favoriteDocs.runtimeType}");
+    favoriteController.update();
 
 
     update();
-
   }
 
-  Future<List<DocumentEntity>> getFavoriteDocsFromPrefs() async {
-    List<DocumentEntity> favoriteDocs = [];
-
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? favoriteDocsStr = prefs.getString("favorite_docs");
-
-    if(favoriteDocsStr != null) {
-
-      List<dynamic> favoriteDocsMapList = jsonDecode(favoriteDocsStr);
-
-      favoriteDocs = favoriteDocsMapList.map((e) {
-        return DocumentEntity.fromJson(e as Map<String, dynamic>);
-      }).toList();
-
-    }
-
-    return favoriteDocs;
-  }
 }

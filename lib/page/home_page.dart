@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
+import 'package:searchimgapp/controller/prefs_controller.dart';
 import 'package:searchimgapp/page/document_detail_page.dart';
 
 import '../data/entity/document_entity.dart';
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeController homeController = Get.put(HomeController());
+  HomeController homeController = Get.find();
 
   @override
   void initState() {
@@ -115,7 +116,8 @@ class _HomePageState extends State<HomePage> {
               )),
               InkWell(
                 onTap: () {
-                  homeController.setFavorite(document: document);
+
+                  homeController.setFavorite(document: document, isFavorite: !(document.isFavorite));
                 },
                 child: document.isFavorite
                     ? Icon(Icons.star)
