@@ -71,7 +71,10 @@ class _FavoritePageState extends State<FavoritePage> {
       children: [
         InkWell(
           onTap: () {
-            Get.to(DocumentDetailPage(document: document));
+            Get.to(() =>DocumentDetailPage(document: document),
+              transition: Transition.fadeIn,
+              duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간 설정
+            );
           },
           child: CachedNetworkImage(
             imageUrl: document.image_url,
