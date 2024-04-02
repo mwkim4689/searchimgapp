@@ -9,11 +9,10 @@ import 'package:searchimgapp/data/response/documents_response.dart';
 import '../data/entity/document_entity.dart';
 import '../data/entity/meta_entity.dart';
 import '../service/http_service.dart';
+import '../util/enums.dart';
 
 class HomeController extends GetxController {
   TextEditingController searchTextController = TextEditingController(text: "");
-
-  ScrollController scrollController = ScrollController();
 
   List<DocumentEntity> documentList = [];
   MetaEntity? meta;
@@ -23,18 +22,8 @@ class HomeController extends GetxController {
   int pageNum = 1;
   int pageSize = 5;
 
-  @override
-  void onInit() {
-    scrollController.addListener(scrollListener);
-  }
 
   /// 스크롤 맨 아래로 갔을 때, search를 호출해서 페이징 되도록 함
-  scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      search(isInitialSearch: false);
-    }
-  }
 
   void setSearchText(String text) {
     searchTextController.text = text;
@@ -46,15 +35,20 @@ class HomeController extends GetxController {
     update();
   }
 
-  Future<void> search({bool isInitialSearch = false}) async {
+  Future<SearchResult> search({bool isInitialSearch = false}) async {
 
+    SearchResult result = SearchResult.fail;
     try {
+
       if (isInitialSearch) {
         documentList.clear();
         pageNum = 1;
-      } else if (meta?.is_end ?? true) {
+      }else if(meta == null){
+        return SearchResult.fail;
+      }
+      else if (meta?.is_end ?? true) {
         /// 마지막 페이지에 도달했으면 더 이상 데이터를 불러오지 않음
-        return;
+        return SearchResult.noData;
       } else {
         /// 더 보기 요청 시 페이지 번호 증가
         pageNum++;
@@ -76,12 +70,16 @@ class HomeController extends GetxController {
       }
 
       updateFavorite();
+      result = SearchResult.success;
     } catch(e) {
-      throw "Search 실패, error: $e";
+      result = SearchResult.fail;
     } finally {
       loading = false;
       update();
     }
+
+
+    return result;
 
 
   }

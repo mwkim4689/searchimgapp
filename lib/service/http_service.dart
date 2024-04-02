@@ -11,7 +11,7 @@ class HttpService {
 
     BaseOptions option = BaseOptions(
       headers: headers,
-      connectTimeout: const Duration(seconds: 5),
+      connectTimeout: const Duration(seconds: 10),
     );
 
     Dio dio = Dio(option);

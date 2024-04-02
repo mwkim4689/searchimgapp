@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
-import 'package:searchimgapp/controller/prefs_controller.dart';
 import 'package:searchimgapp/page/document_detail_page.dart';
 
 import '../data/entity/document_entity.dart';
+import '../util/enums.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,9 +19,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   HomeController homeController = Get.find();
 
+  ScrollController scrollController = ScrollController();
+  FocusNode searchFieldFocusNode = FocusNode(); // FocusNode 객체 추가
+
   @override
   void initState() {
     super.initState();
+    scrollController.addListener(scrollListener);
+
+  }
+
+
+  @override
+  void dispose() {
+    searchFieldFocusNode.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  scrollListener() async {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      SearchResult result = SearchResult.fail;
+      result = await homeController.search(isInitialSearch: false);
+      if(result == SearchResult.fail) {
+        if(context.mounted == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("검색이 실패했습니다."),
+              duration: Duration(seconds: 3), // 스낵바 표시 시간 설정
+            ),
+          );
+        }
+      }
+    }
   }
 
   /// 포커스 해제하여 키보드를 숨깁니다.
@@ -39,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             return Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),
                   child: Column(
                     children: [
                       Container(
@@ -56,8 +87,23 @@ class _HomePageState extends State<HomePage> {
                               child: TextFormField(
                                 controller: homeController.searchTextController,
                                 textInputAction: TextInputAction.search,
-                                onFieldSubmitted: (String text) {
-                                  homeController.search(isInitialSearch: true);
+                                focusNode: searchFieldFocusNode,
+                                onFieldSubmitted: (String text) async{
+
+                                  SearchResult result = SearchResult.fail;
+                                  result = await homeController.search(isInitialSearch: true);
+                                  if (result == SearchResult.fail) {
+                                    if (context.mounted == true) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text("검색이 실패했습니다."),
+                                          duration: Duration(
+                                              seconds: 3), // 스낵바 표시 시간 설정
+                                        ),
+                                      );
+                                    }
+                                  }
                                 },
                                 onChanged: (String text) {
                                   homeController.setSearchText(text);
@@ -87,10 +133,10 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 6),
                       Expanded(
                         child: ListView.separated(
-                          controller: _.scrollController,
+                          controller: scrollController,
                           itemCount: _.documentList.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return documentItem(_, index);
+                            return documentItem(_, index, context);
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox(height: 20);
@@ -117,16 +163,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget documentItem(HomeController _, int index) {
+  Widget documentItem(HomeController _, int index, BuildContext context) {
     DocumentEntity document = _.documentList[index];
 
     return Column(
       children: [
         InkWell(
-          onTap: () {
-            Get.to(DocumentDetailPage(document: document));
+          onTap: () async{
+            // FocusScope.of(context).unfocus();
+            // await Future.delayed(Duration(milliseconds: 100));
+            searchFieldFocusNode.unfocus(); // 포커스 해제
+            Get.to(() =>DocumentDetailPage(document: document),
+              transition: Transition.fadeIn,
+              duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간 설정
+            );
           },
           child: CachedNetworkImage(
+            width: Get.width,
+            fit: BoxFit.fitWidth,
             imageUrl: document.image_url,
             errorWidget: (context, url, error) => Container(
                 height: 100,
