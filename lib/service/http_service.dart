@@ -9,7 +9,10 @@ class HttpService {
 
     Map<String, dynamic> headers = {"Authorization": "KakaoAK $REST_API_KEY"};
 
-    BaseOptions option = BaseOptions(headers: headers);
+    BaseOptions option = BaseOptions(
+      headers: headers,
+      connectTimeout: const Duration(seconds: 5),
+    );
 
     Dio dio = Dio(option);
     dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
