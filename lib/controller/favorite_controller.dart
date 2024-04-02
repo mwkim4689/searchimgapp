@@ -14,22 +14,31 @@ class FavoriteController extends GetxController {
   bool loading = false;
 
   Future<void> fetchFavoriteDcosFromPrefs() async {
-    loading = true;
-    update();
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? favoriteDocsStr = prefs.getString("favorite_docs");
+    try {
+      loading = true;
+      update();
 
-    if (favoriteDocsStr != null) {
-      List<dynamic> favoriteDocsMapList = jsonDecode(favoriteDocsStr);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? favoriteDocsStr = prefs.getString("favorite_docs");
 
-      favoriteDocs = favoriteDocsMapList.map((e) {
-        return DocumentEntity.fromJson(e as Map<String, dynamic>);
-      }).toList();
+      if (favoriteDocsStr != null) {
+        List<dynamic> favoriteDocsMapList = jsonDecode(favoriteDocsStr);
+
+        favoriteDocs = favoriteDocsMapList.map((e) {
+          return DocumentEntity.fromJson(e as Map<String, dynamic>);
+        }).toList();
+      }
+    } catch(e) {
+      throw "SharedPreferences, favorite_docs Error : $e ";
+    } finally {
+      loading = false;
+      update();
     }
 
-    loading = false;
-    update();
+
+
+
   }
 
   Future<void> setFavorite({required DocumentEntity document}) async {
