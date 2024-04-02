@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 포커스 해제하여 키보드를 숨깁니다.
   void _onTapOutside() {
-    FocusScope.of(context).unfocus();
+    searchFieldFocusNode.unfocus(); // 포커스 해제
   }
 
   @override
@@ -170,13 +170,15 @@ class _HomePageState extends State<HomePage> {
       children: [
         InkWell(
           onTap: () async{
-            // FocusScope.of(context).unfocus();
-            // await Future.delayed(Duration(milliseconds: 100));
-            searchFieldFocusNode.unfocus(); // 포커스 해제
-            Get.to(() =>DocumentDetailPage(document: document),
-              transition: Transition.fadeIn,
-              duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간 설정
-            );
+            if(searchFieldFocusNode.hasFocus) {
+              searchFieldFocusNode.unfocus();
+            }else {
+              Get.to(() =>DocumentDetailPage(document: document),
+                transition: Transition.fadeIn,
+                duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간 설정
+              );
+            }
+
           },
           child: CachedNetworkImage(
             width: Get.width,
