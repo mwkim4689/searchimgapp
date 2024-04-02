@@ -23,72 +23,79 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  /// 포커스 해제하여 키보드를 숨깁니다.
+  void _onTapOutside() {
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                child: Text("이미지 검색 페이지"),
-              ),
-              Container(
-                height: 60,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 6,
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextFormField(
-                        controller: homeController.searchTextController,
-                        textInputAction: TextInputAction.search,
-                        onFieldSubmitted: (String text) {
-                          homeController.search(isInitialSearch: true);
-                        },
-                        onChanged: (String text) {
-                          homeController.setSearchText(text);
-                        },
-                        decoration: const InputDecoration(
-                          hintText: "검색어를 입력하세요",
-                          // border: InputBorder.none,
-                          // focusedBorder: InputBorder.none,
-                          // enabledBorder: InputBorder.none,
-                          // errorBorder: InputBorder.none,
-                          // disabledBorder: InputBorder.none,
+    return GestureDetector(
+      onTap: _onTapOutside,
+      child: SafeArea(
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.black.withOpacity(0.05),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: TextFormField(
+                          controller: homeController.searchTextController,
+                          textInputAction: TextInputAction.search,
+                          onFieldSubmitted: (String text) {
+                            homeController.search(isInitialSearch: true);
+                          },
+                          onChanged: (String text) {
+                            homeController.setSearchText(text);
+                          },
+                          decoration: InputDecoration(
+                            hintText: "검색어를 입력하세요",
+                            hintStyle: TextStyle(
+                                color: Colors.black.withOpacity(0.35)),
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                          ),
                         ),
                       ),
-                    ),
-                    // if (_.searchRecords.isNotEmpty || _.searchText.isNotEmpty)
-                    InkWell(
-                      onTap: () {
-                        homeController.clearSearchText();
-                      },
-                      child: const Icon(Icons.close, size: 20),
-                    ),
-                  ],
+                      // if (_.searchRecords.isNotEmpty || _.searchText.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          homeController.clearSearchText();
+                        },
+                        child: const Icon(Icons.close, size: 20),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: GetBuilder<HomeController>(builder: (_) {
-                  return ListView.separated(
-                    controller: _.scrollController,
-                    itemCount: _.documentList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return documentItem(_, index);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(height: 20);
-                    },
-                  );
-                }),
-              )
-            ],
+                const SizedBox(height: 6),
+                Expanded(
+                  child: GetBuilder<HomeController>(builder: (_) {
+                    return ListView.separated(
+                      controller: _.scrollController,
+                      itemCount: _.documentList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return documentItem(_, index);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(height: 20);
+                      },
+                    );
+                  }),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -98,34 +105,37 @@ class _HomePageState extends State<HomePage> {
   Widget documentItem(HomeController _, int index) {
     DocumentEntity document = _.documentList[index];
 
-    return InkWell(
-      onTap: () {
-        Get.to(DocumentDetailPage(document: document));
-      },
-      child: Column(
-        children: [
-          Image.network(document.image_url),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: Text(
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            Get.to(DocumentDetailPage(document: document));
+          },
+          child: Image.network(document.image_url),
+        ),
+        const SizedBox(height: 6),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
                 document.display_sitename,
+                style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
-              )),
-              InkWell(
-                onTap: () {
-
-                  homeController.setFavorite(document: document, isFavorite: !(document.isFavorite));
-                },
-                child: document.isFavorite
-                    ? Icon(Icons.star)
-                    : Icon(Icons.star_border),
-              )
-            ],
-          )
-        ],
-      ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                homeController.setFavorite(
+                    document: document, isFavorite: !(document.isFavorite));
+              },
+              child: document.isFavorite
+                  ? const Icon(Icons.star)
+                  : const Icon(Icons.star_border),
+            )
+          ],
+        )
+      ],
     );
   }
 }
