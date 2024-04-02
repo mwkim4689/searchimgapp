@@ -17,7 +17,7 @@ class PrefsController extends GetxController {
 
     if (isFavorite == true) {
       // favoriteDocs.add(document);
-      favoriteDocs.add(document.copyWith());
+      favoriteDocs.insert(0,document.copyWith());
     } else {
       // favoriteDocs.remove(document);
       favoriteDocs.removeWhere((element) => element.image_url == document.image_url);

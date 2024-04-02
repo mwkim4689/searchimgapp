@@ -113,7 +113,7 @@ class HomeController extends GetxController {
     /// Favorite Page 에서 즐겨찾기 추가
     FavoriteController favoriteController = Get.find<FavoriteController>();
     if (isFavorite == true) {
-      favoriteController.favoriteDocs.add(document.copyWith());
+      favoriteController.favoriteDocs.insert(0, document.copyWith());
     } else {
       favoriteController.favoriteDocs
           .removeWhere((element) => element.image_url == document.image_url);

@@ -25,6 +25,7 @@ class FavoriteController extends GetxController {
       if (favoriteDocsStr != null) {
         List<dynamic> favoriteDocsMapList = jsonDecode(favoriteDocsStr);
 
+
         favoriteDocs = favoriteDocsMapList.map((e) {
           return DocumentEntity.fromJson(e as Map<String, dynamic>);
         }).toList();
