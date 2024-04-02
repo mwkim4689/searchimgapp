@@ -42,16 +42,7 @@ class _HomePageState extends State<HomePage> {
         scrollController.position.maxScrollExtent) {
       SearchResult result = SearchResult.fail;
       result = await homeController.search(isInitialSearch: false);
-      if(result == SearchResult.fail) {
-        if(context.mounted == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("검색이 실패했습니다."),
-              duration: Duration(seconds: 3), // 스낵바 표시 시간 설정
-            ),
-          );
-        }
-      }
+      showSearchFailSnackBar(result, context);
     }
   }
 
@@ -92,18 +83,7 @@ class _HomePageState extends State<HomePage> {
 
                                   SearchResult result = SearchResult.fail;
                                   result = await homeController.search(isInitialSearch: true);
-                                  if (result == SearchResult.fail) {
-                                    if (context.mounted == true) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text("검색이 실패했습니다."),
-                                          duration: Duration(
-                                              seconds: 3), // 스낵바 표시 시간 설정
-                                        ),
-                                      );
-                                    }
-                                  }
+                                  showSearchFailSnackBar(result, context);
                                 },
                                 decoration: InputDecoration(
                                   hintText: "검색어를 입력하세요",
@@ -158,6 +138,21 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void showSearchFailSnackBar(SearchResult result, BuildContext context) {
+    if (result == SearchResult.fail) {
+      if (context.mounted == true) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(
+          const SnackBar(
+            content: Text("검색이 실패했습니다."),
+            duration: Duration(
+                seconds: 3), // 스낵바 표시 시간 설정
+          ),
+        );
+      }
+    }
   }
 
   Widget documentItem(HomeController _, int index, BuildContext context) {
