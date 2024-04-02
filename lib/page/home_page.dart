@@ -105,9 +105,6 @@ class _HomePageState extends State<HomePage> {
                                     }
                                   }
                                 },
-                                onChanged: (String text) {
-                                  homeController.setSearchText(text);
-                                },
                                 decoration: InputDecoration(
                                   hintText: "검색어를 입력하세요",
                                   hintStyle: TextStyle(
