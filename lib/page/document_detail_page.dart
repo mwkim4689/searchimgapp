@@ -1,9 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:searchimgapp/data/entity/document_entity.dart';
 
+import '../util/app_utils.dart';
+
 class DocumentDetailPage extends StatefulWidget {
   DocumentEntity document;
+
   DocumentDetailPage({super.key, required this.document});
 
   @override
@@ -15,10 +17,14 @@ class _DetailPageState extends State<DocumentDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Image.network(widget.document.image_url),
-
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.network(widget.document.image_url),
+          SizedBox(height: AppUtils.get2BarHeight(context)),
+        ],
       ),
     );
   }
+
 }

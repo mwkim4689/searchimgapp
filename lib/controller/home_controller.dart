@@ -97,7 +97,7 @@ class HomeController extends GetxController {
         .setPrefsFavorite(document: document, isFavorite: isFavorite);
 
 
-    /// Favorite Page 에서 즐겨찾기기 추가
+    /// Favorite Page 에서 즐겨찾기 추가
     FavoriteController favoriteController = Get.find<FavoriteController>();
     if (isFavorite == true) {
       favoriteController.favoriteDocs.add(document.copyWith());

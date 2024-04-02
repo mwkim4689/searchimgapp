@@ -12,7 +12,7 @@ class PrefsController extends GetxController {
       {required DocumentEntity document, required bool isFavorite}) async {
 
 
-    /// Prefrences의 즐겨찾기 값에 따른 리스트 추가 or 제거
+    /// Prefrences에 favoriteDoc 리스트 추가/제거
     List<DocumentEntity> favoriteDocs = await getFavoriteDocsFromPrefs();
 
     if (isFavorite == true) {
