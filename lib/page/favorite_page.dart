@@ -42,30 +42,31 @@ class _FavoritePageState extends State<FavoritePage> {
 
   Widget _buildMainContent(FavoriteController _) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),
       child: Column(
         children: [
           Expanded(
-              child: ListView.separated(
-            itemCount: _.favoriteDocs.length,
-            itemBuilder: (BuildContext context, int index) {
-              DocumentEntity document = _.favoriteDocs[index];
-              return DocumentItemWidget(
-                document: document,
-                pictureTap: (){
-                  Get.to(() => DocumentDetailPage(document: document),
-                      transition: Transition.fadeIn,
-                      duration: const Duration(milliseconds: 500));
-                },
-                favTap: () {
-                  favoriteController.setFavorite(document: document);
-                },
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 20);
-            },
-          )),
+            child: ListView.separated(
+              itemCount: _.favoriteDocs.length,
+              itemBuilder: (BuildContext context, int index) {
+                DocumentEntity document = _.favoriteDocs[index];
+                return DocumentItemWidget(
+                  document: document,
+                  pictureTap: () {
+                    Get.to(() => DocumentDetailPage(document: document),
+                        transition: Transition.fadeIn,
+                        duration: const Duration(milliseconds: 500));
+                  },
+                  favTap: () {
+                    favoriteController.setFavorite(document: document);
+                  },
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 20);
+              },
+            ),
+          ),
         ],
       ),
     );

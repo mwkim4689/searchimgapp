@@ -33,19 +33,33 @@ class DocumentItemWidget extends StatelessWidget {
         width: double.infinity,
         fit: BoxFit.fitWidth,
         imageUrl: document.image_url,
-        errorWidget: (context, url, error) => _buildErrorWidget(),
+        placeholder: (context, url) => _buildSubtlePlaceholder(),
+        errorWidget: (context, url, error) => _buildImageErrorWidget(),
       ),
     );
   }
 
-  Widget _buildErrorWidget() {
+  Widget _buildSubtlePlaceholder() {
     return Container(
-      height: 100,
+      height: 200,
       width: double.infinity,
-      color: Colors.black.withOpacity(0.05),
-      child: const Icon(Icons.error),
+      color: Colors.black.withOpacity(0.02), // 가벼운 회색 배경으로 미묘한 플레이스홀더 제공
     );
   }
+
+  Widget _buildImageErrorWidget() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      color: Colors.grey[200],
+      child: Icon(
+        Icons.image_not_supported,
+        size: 24,
+        color: Colors.grey[500],
+      ),
+    );
+  }
+
 
   Widget _buildInfoRow(BuildContext context) {
     return Row(
