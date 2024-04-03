@@ -4,6 +4,7 @@ import 'package:searchimgapp/data/response/documents_response.dart';
 class HttpService {
   static String IMG_SEARCH_URL = "https://dapi.kakao.com/v2/search/image";
 
+  ///기본 DIO 설정 - 이걸 가져와서 사용하면 됨
   static Dio getDio() {
     String restApiKey = "bc44da37a34a84e4e8e5ec5a7727429a";
 
@@ -19,6 +20,7 @@ class HttpService {
     return dio;
   }
 
+  /// 이미지 검색 API
   static Future<DocumentsResponse> fetchImages(
       {required String searchText, int? page, required int? size}) async {
     Map<String, dynamic> queryParams = {

@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
-import 'package:searchimgapp/controller/prefs_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/entity/document_entity.dart';
+import 'common_method/prefs.dart';
 
 class FavoriteController extends GetxController {
 
@@ -13,6 +14,7 @@ class FavoriteController extends GetxController {
 
   bool loading = false;
 
+  ///로컬에서 즐겨찾기 값 가져와서 업데이트
   Future<void> fetchFavoriteDcosFromPrefs() async {
 
     try {
@@ -21,6 +23,8 @@ class FavoriteController extends GetxController {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? favoriteDocsStr = prefs.getString("favorite_docs");
+
+      debugPrint("favoriteDocsStr : ${favoriteDocsStr}");
 
       if (favoriteDocsStr != null) {
         List<dynamic> favoriteDocsMapList = jsonDecode(favoriteDocsStr);
@@ -42,26 +46,31 @@ class FavoriteController extends GetxController {
 
   }
 
-  Future<void> setFavorite({required DocumentEntity document}) async {
 
-    /// 로컬에 favorite document list 상태 업데이트
-    await Get.find<PrefsController>().setPrefsFavorite(
-        document: document, isFavorite: false);
+  ///즐겨찾기 값 업데이트 - (1) Favorite Page (2) 로컬 저장 (3) Home Page
+  Future<void> setFavoriteVer2(
+      {required DocumentEntity document, required bool isFavorite}) async {
 
+    // Favorite Page 에서 즐겨찾기 추가
+    document.isFavorite = isFavorite;
+    if (isFavorite == true) {
+      favoriteDocs.insert(0, document.copyWith());
+    } else {
+      favoriteDocs
+          .removeWhere((element) => element.image_url == document.image_url);
+    }
 
-    /// Favorite 페이지에서 즐겨찾기 아이템 제거
-    favoriteDocs.remove(document);
+    // Preferences에 favorite list 상태 저장
+    await setFavDocsToPrefs(favoriteDocs);
 
-
-    /// 홈페이지에서 즐찾기기 Off
-    HomeController homeController = Get.find<HomeController>();
-    DocumentEntity? doc = homeController.documentList
-        .firstWhereOrNull((element) => element.image_url == document.image_url);
-    doc?.isFavorite = false;
-
-
-    homeController.update();
+    // HomePage에서 documentList에 즐겨찾기값 업데이트
+    Get.find<HomeController>().updateFavorite();
 
     update();
+
+
   }
+
+
+
 }
