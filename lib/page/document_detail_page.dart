@@ -8,7 +8,7 @@ import '../util/app_utils.dart';
 class DocumentDetailPage extends StatefulWidget {
   final DocumentEntity document;
 
-  DocumentDetailPage({super.key, required this.document});
+  const DocumentDetailPage({super.key, required this.document});
 
   @override
   State<DocumentDetailPage> createState() => _DetailPageState();
