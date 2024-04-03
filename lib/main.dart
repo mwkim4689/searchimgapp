@@ -14,9 +14,9 @@ void main() {
 }
 
 void initGetX() {
-  Get.put(HomeController());
-  Get.put(FavoriteController());
-  Get.put(MainTabController());
+  Get.lazyPut(() => HomeController());
+  Get.lazyPut(() => FavoriteController());
+  Get.lazyPut(() => MainTabController());
 }
 
 class MyApp extends StatelessWidget {
