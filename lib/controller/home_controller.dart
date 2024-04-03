@@ -31,9 +31,9 @@ class HomeController extends GetxController {
     update();
   }
 
-
   Future<SearchResult> search({bool isInitialSearch = false}) async {
-    if (!canSearch(isInitialSearch)) return SearchResult.fail;
+    final searchStatus = canSearch(isInitialSearch);
+    if (searchStatus != SearchResult.success) return searchStatus;
 
     try {
       loading = true;
@@ -52,17 +52,27 @@ class HomeController extends GetxController {
     }
   }
 
-  bool canSearch(bool isInitialSearch) {
+
+  SearchResult canSearch(bool isInitialSearch) {
+    // 초기 검색의 경우, 이전 결과를 지우고 새로 시작
     if (isInitialSearch) {
       documentList.clear();
       pageNum = 1;
-      return true;
+      return SearchResult.success;
     }
 
-    if (meta?.is_end ?? true) return false;
+    // meta 정보가 없는 경우, 실패로 처리
+    if (meta == null) {
+      return SearchResult.fail;
+    }
+    // 더 이상 불러올 데이터가 없는 경우
+    else if (meta?.is_end ?? true) {
+      return SearchResult.noData;
+    }
 
+    // 다음 페이지로 넘어갈 준비
     pageNum++;
-    return true;
+    return SearchResult.success;
   }
 
   Future<DocumentsResponse?> fetchSearchResults(bool isInitialSearch) async {
