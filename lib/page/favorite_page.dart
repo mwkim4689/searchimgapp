@@ -58,7 +58,10 @@ class _FavoritePageState extends State<FavoritePage> {
                         duration: const Duration(milliseconds: 500));
                   },
                   favTap: () {
-                    favoriteController.setFavorite(document: document);
+                    favoriteController.setFavoriteVer2(
+                      document: document,
+                      isFavorite: !(document.isFavorite),
+                    );
                   },
                 );
               },

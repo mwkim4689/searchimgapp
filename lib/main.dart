@@ -6,8 +6,6 @@ import 'package:searchimgapp/main_tab.dart';
 import 'package:searchimgapp/style/theme_data.dart';
 
 import 'controller/main_tab_controller.dart';
-import 'controller/prefs_controller.dart';
-
 void main() {
 
   initGetX();
@@ -18,7 +16,6 @@ void main() {
 void initGetX() {
   Get.put(HomeController());
   Get.put(FavoriteController());
-  Get.put(PrefsController());
   Get.put(MainTabController());
 }
 

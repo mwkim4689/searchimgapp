@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:searchimgapp/controller/favorite_controller.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
 import 'package:searchimgapp/page/common_widget/loading_indicator_widget.dart';
 
@@ -134,7 +135,7 @@ class _HomePageState extends State<HomePage> {
           DocumentEntity document = _.documentList[index];
           return DocumentItemWidget(
             document: document,
-            pictureTap: (){
+            pictureTap: () {
               if (_searchFieldFocusNode.hasFocus) {
                 _searchFieldFocusNode.unfocus();
               } else {
@@ -142,10 +143,9 @@ class _HomePageState extends State<HomePage> {
                     transition: Transition.fadeIn,
                     duration: const Duration(milliseconds: 500));
               }
-
             },
             favTap: () {
-              homeController.setFavorite(
+              Get.find<FavoriteController>().setFavoriteVer2(
                 document: document,
                 isFavorite: !(document.isFavorite),
               );

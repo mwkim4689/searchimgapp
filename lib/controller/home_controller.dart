@@ -1,13 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:searchimgapp/controller/favorite_controller.dart';
-import 'package:searchimgapp/controller/prefs_controller.dart';
 import 'package:searchimgapp/data/response/documents_response.dart';
 
 import '../data/entity/document_entity.dart';
 import '../data/entity/meta_entity.dart';
 import '../service/http_service.dart';
 import '../util/enums.dart';
+import 'common_method/prefs.dart';
 
 class HomeController extends GetxController {
   TextEditingController searchTextController = TextEditingController(text: "");
@@ -16,8 +17,9 @@ class HomeController extends GetxController {
   MetaEntity? meta;
 
   bool loading = false;
-
+  /// 페이지 번호
   int pageNum = 1;
+  /// 한 번 검색시 나오는 문서 수
   int pageSize = 5;
 
 
@@ -31,6 +33,9 @@ class HomeController extends GetxController {
     update();
   }
 
+  /// 검색 관련 메쏘드들
+  /// search, canSearch, fetchSearchResults, handleSearchResults
+
   Future<SearchResult> search({bool isInitialSearch = false}) async {
     final searchStatus = canSearch(isInitialSearch);
     if (searchStatus != SearchResult.success) return searchStatus;
@@ -42,7 +47,8 @@ class HomeController extends GetxController {
           searchText: searchTextController.text, page: pageNum, size: pageSize);
 
       handleSearchResults(documentsResponse, isInitialSearch);
-      updateFavorite();
+      await updateFavorite();
+      debugPrint("documentListStr2 : ${jsonEncode(documentList) }");
       return SearchResult.success;
     } catch (e) {
       return SearchResult.fail;
@@ -94,42 +100,24 @@ class HomeController extends GetxController {
 
   /// 검색한 후 리스팅 할 때, 즐겨찾기에 저장된 문서랑 같은게 있을 때, favorite 추가
   updateFavorite() async {
-    List<DocumentEntity> favoriteDocs =
-        await Get.find<PrefsController>().getFavoriteDocsFromPrefs();
+    List<DocumentEntity> favoriteDocs = await getFavoriteDocsFromPrefs();
 
+    //isFavorite false로 초기화 - 즐겨찾기 페이지에서 삭제했을 때 홈페이지에서도 즐겨찾기 삭제
     for (DocumentEntity doc in documentList) {
-      for (DocumentEntity favDoc in favoriteDocs) {
+      doc.isFavorite = false;
+    }
+
+    //즐겨찾기 리스트에 저장된 값에 따라 검색 페이지의 이미지 리스트에 즐겨찾기 값 업데이트
+    for (DocumentEntity favDoc in favoriteDocs) {
+      for (DocumentEntity doc in documentList) {
         if (doc.image_url == favDoc.image_url) {
           doc.isFavorite = true;
         }
       }
     }
-  }
-
-  Future<void> setFavorite(
-      {required DocumentEntity document, required bool isFavorite}) async {
-
-    // Home Page에서 즐겨찾기 On/Off
-    document.isFavorite = isFavorite;
-
-
-    // 로컬에 favorite document list 상태 업데이트
-    Get.find<PrefsController>()
-        .setPrefsFavorite(document: document, isFavorite: isFavorite);
-
-
-    // Favorite Page 에서 즐겨찾기 추가
-    FavoriteController favoriteController = Get.find<FavoriteController>();
-    if (isFavorite == true) {
-      favoriteController.favoriteDocs.insert(0, document.copyWith());
-    } else {
-      favoriteController.favoriteDocs
-          .removeWhere((element) => element.image_url == document.image_url);
-    }
-    favoriteController.update();
-
 
     update();
   }
+
 
 }
