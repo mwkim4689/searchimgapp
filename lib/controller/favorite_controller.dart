@@ -33,7 +33,7 @@ class FavoriteController extends GetxController {
         }).toList();
       }
     } catch(e) {
-      throw "SharedPreferences, favorite_docs Error : $e ";
+      debugPrint("SharedPreferences, favorite_docs Error : $e ");
     } finally {
       loading = false;
       update();
@@ -46,7 +46,7 @@ class FavoriteController extends GetxController {
 
 
   ///즐겨찾기 값 업데이트 - (1) Favorite Page (2) 로컬 저장 (3) Home Page
-  Future<void> setFavoriteVer2(
+  Future<void> setFavorite(
       {required DocumentEntity document, required bool isFavorite}) async {
 
     // Favorite Page 에서 즐겨찾기 추가하거나 제거

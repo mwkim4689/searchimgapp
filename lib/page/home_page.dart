@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
               }
             },
             favTap: () {
-              Get.find<FavoriteController>().setFavoriteVer2(
+              Get.find<FavoriteController>().setFavorite(
                 document: document,
                 isFavorite: !(document.isFavorite),
               );
