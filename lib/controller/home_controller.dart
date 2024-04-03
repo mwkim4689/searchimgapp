@@ -33,55 +33,6 @@ class HomeController extends GetxController {
     update();
   }
 
-  // Future<SearchResult> search({bool isInitialSearch = false}) async {
-  //
-  //   SearchResult result = SearchResult.fail;
-  //   try {
-  //
-  //     if (isInitialSearch) {
-  //       documentList.clear();
-  //       pageNum = 1;
-  //     }else if(meta == null){
-  //       return SearchResult.fail;
-  //     }
-  //     else if (meta?.is_end ?? true) {
-  //       /// 마지막 페이지에 도달했으면 더 이상 데이터를 불러오지 않음
-  //       return SearchResult.noData;
-  //     } else {
-  //       /// 더 보기 요청 시 페이지 번호 증가
-  //       pageNum++;
-  //     }
-  //
-  //     loading = true;
-  //     update();
-  //
-  //
-  //     DocumentsResponse documentsResponse = await HttpService.fetchImages(
-  //         searchText: searchTextController.text, page: pageNum, size: pageSize);
-  //
-  //     meta = documentsResponse.meta;
-  //
-  //     if (isInitialSearch) {
-  //       documentList = documentsResponse.documents;
-  //     } else {
-  //       documentList.addAll(documentsResponse.documents);
-  //     }
-  //
-  //     updateFavorite();
-  //     result = SearchResult.success;
-  //   } catch(e) {
-  //     result = SearchResult.fail;
-  //   } finally {
-  //     loading = false;
-  //     update();
-  //   }
-  //
-  //
-  //   return result;
-  //
-  //
-  // }
-
 
   Future<SearchResult> search({bool isInitialSearch = false}) async {
     if (!canSearch(isInitialSearch)) return SearchResult.fail;
