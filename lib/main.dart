@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'SearchImgApp',
+      title: 'ImgSearch',
       theme: appThemeData(context),
       home: const MainTab(),
     );

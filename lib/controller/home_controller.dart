@@ -109,16 +109,16 @@ class HomeController extends GetxController {
   Future<void> setFavorite(
       {required DocumentEntity document, required bool isFavorite}) async {
 
-    /// Home Page에서 즐겨찾기 On/Off
+    // Home Page에서 즐겨찾기 On/Off
     document.isFavorite = isFavorite;
 
 
-    /// 로컬에 favorite document list 상태 업데이트
+    // 로컬에 favorite document list 상태 업데이트
     Get.find<PrefsController>()
         .setPrefsFavorite(document: document, isFavorite: isFavorite);
 
 
-    /// Favorite Page 에서 즐겨찾기 추가
+    // Favorite Page 에서 즐겨찾기 추가
     FavoriteController favoriteController = Get.find<FavoriteController>();
     if (isFavorite == true) {
       favoriteController.favoriteDocs.insert(0, document.copyWith());
