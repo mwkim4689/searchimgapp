@@ -51,7 +51,7 @@ class FavoriteController extends GetxController {
   Future<void> setFavoriteVer2(
       {required DocumentEntity document, required bool isFavorite}) async {
 
-    // Favorite Page 에서 즐겨찾기 추가
+    // Favorite Page 에서 즐겨찾기 추가하거나 제거
     document.isFavorite = isFavorite;
     if (isFavorite == true) {
       favoriteDocs.insert(0, document.copyWith());
@@ -63,7 +63,7 @@ class FavoriteController extends GetxController {
     // Preferences에 favorite list 상태 저장
     await setFavDocsToPrefs(favoriteDocs);
 
-    // HomePage에서 documentList에 즐겨찾기값 업데이트
+    // HomePage에서 documentList에 즐겨찾기 값 업데이트
     Get.find<HomeController>().updateFavorite();
 
     update();
