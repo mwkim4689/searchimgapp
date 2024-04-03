@@ -24,8 +24,6 @@ class FavoriteController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? favoriteDocsStr = prefs.getString("favorite_docs");
 
-      debugPrint("favoriteDocsStr : ${favoriteDocsStr}");
-
       if (favoriteDocsStr != null) {
         List<dynamic> favoriteDocsMapList = jsonDecode(favoriteDocsStr);
 

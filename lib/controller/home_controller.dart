@@ -50,7 +50,7 @@ class HomeController extends GetxController {
 
       handleSearchResults(documentsResponse, isInitialSearch);
       await updateFavorite();
-      debugPrint("documentListStr2 : ${jsonEncode(documentList) }");
+
       return SearchResult.success;
     } catch (e) {
       return SearchResult.fail;
