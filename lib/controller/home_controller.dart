@@ -33,9 +33,11 @@ class HomeController extends GetxController {
     update();
   }
 
-  /// 검색 관련 메쏘드들
-  /// search, canSearch, fetchSearchResults, handleSearchResults
 
+  /// 검색을 수행합니다.
+  /// [isInitialSearch]가 true일 경우, 새로운 검색을 시작하고 기존 결과를 지웁니다.
+  /// 검색 성공 시 SearchResult.success를 반환하고,
+  /// 실패하거나 데이터가 없을 경우 해당 결과를 반환합니다.
   Future<SearchResult> search({bool isInitialSearch = false}) async {
     final searchStatus = canSearch(isInitialSearch);
     if (searchStatus != SearchResult.success) return searchStatus;
