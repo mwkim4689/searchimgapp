@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:searchimgapp/controller/home_controller.dart';
 import 'package:searchimgapp/page/common_widget/loading_indicator_widget.dart';
