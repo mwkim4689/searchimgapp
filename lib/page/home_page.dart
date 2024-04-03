@@ -6,6 +6,7 @@ import 'package:searchimgapp/page/common_widget/loading_indicator_widget.dart';
 import '../data/entity/document_entity.dart';
 import '../util/enums.dart';
 import 'common_widget/document_item_widget.dart';
+import 'document_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,26 +18,26 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   HomeController homeController = Get.find();
 
-  ScrollController scrollController = ScrollController();
-  FocusNode searchFieldFocusNode = FocusNode(); // FocusNode 객체 추가
+  final ScrollController _scrollController = ScrollController();
+  final FocusNode _searchFieldFocusNode = FocusNode(); // FocusNode 객체 추가
 
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(scrollListener);
+    _scrollController.addListener(scrollListener);
   }
 
   @override
   void dispose() {
-    searchFieldFocusNode.dispose();
-    scrollController.dispose();
+    _searchFieldFocusNode.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   scrollListener() async {
     /// 스크롤 맨 아래로 갔을 때, search를 호출해서 페이징 되도록 함
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       SearchResult result = SearchResult.fail;
       result = await homeController.search(isInitialSearch: false);
       showSearchFailSnackBar(result, context);
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 포커스 해제하여 키보드를 숨김.
   void _onTapOutside() {
-    searchFieldFocusNode.unfocus(); // 포커스 해제
+    _searchFieldFocusNode.unfocus(); // 포커스 해제
   }
 
   @override
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage> {
             child: TextFormField(
               controller: homeController.searchTextController,
               textInputAction: TextInputAction.search,
-              focusNode: searchFieldFocusNode,
+              focusNode: _searchFieldFocusNode,
               onFieldSubmitted: (String text) async {
                 SearchResult result = SearchResult.fail;
                 result = await homeController.search(isInitialSearch: true);
@@ -127,12 +128,22 @@ class _HomePageState extends State<HomePage> {
   Widget _buildSearchResults(HomeController _) {
     return Expanded(
       child: ListView.separated(
-        controller: scrollController,
+        controller: _scrollController,
         itemCount: _.documentList.length,
         itemBuilder: (BuildContext context, int index) {
           DocumentEntity document = _.documentList[index];
           return DocumentItemWidget(
             document: document,
+            pictureTap: (){
+              if (_searchFieldFocusNode.hasFocus) {
+                _searchFieldFocusNode.unfocus();
+              } else {
+                Get.to(() => DocumentDetailPage(document: document),
+                    transition: Transition.fadeIn,
+                    duration: const Duration(milliseconds: 500));
+              }
+
+            },
             favTap: () {
               homeController.setFavorite(
                 document: document,

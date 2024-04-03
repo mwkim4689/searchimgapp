@@ -1,17 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../data/entity/document_entity.dart';
-import '../document_detail_page.dart';
 
 class DocumentItemWidget extends StatelessWidget {
   final DocumentEntity document;
+  final Function() pictureTap;
   final Function() favTap;
 
   const DocumentItemWidget({
     super.key,
     required this.document,
+    required this.pictureTap,
     required this.favTap,
   });
 
@@ -28,7 +28,7 @@ class DocumentItemWidget extends StatelessWidget {
 
   Widget _buildImage(BuildContext context) {
     return InkWell(
-      onTap: () => _handleTap(context),
+      onTap: pictureTap,// _handleTap(context),
       child: CachedNetworkImage(
         width: double.infinity,
         fit: BoxFit.fitWidth,
@@ -59,9 +59,7 @@ class DocumentItemWidget extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {
-            favTap.call();
-          },
+          onTap: favTap,
           child: document.isFavorite
               ? const Icon(Icons.star)
               : const Icon(Icons.star_border),
@@ -70,13 +68,4 @@ class DocumentItemWidget extends StatelessWidget {
     );
   }
 
-  void _handleTap(BuildContext context) {
-    if (FocusScope.of(context).hasFocus) {
-      FocusScope.of(context).unfocus();
-    } else {
-      Get.to(() => DocumentDetailPage(document: document),
-          transition: Transition.fadeIn,
-          duration: const Duration(milliseconds: 500));
-    }
-  }
 }
