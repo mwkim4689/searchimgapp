@@ -117,7 +117,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // if (_.searchRecords.isNotEmpty || _.searchText.isNotEmpty)
           InkWell(
             onTap: () {
               homeController.clearSearchText();
