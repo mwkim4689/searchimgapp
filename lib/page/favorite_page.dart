@@ -5,6 +5,7 @@ import '../controller/favorite_controller.dart';
 import '../data/entity/document_entity.dart';
 import 'common_widget/document_item_widget.dart';
 import 'common_widget/loading_indicator_widget.dart';
+import 'common_widget/no_data_widget.dart';
 import 'document_detail_page.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -31,7 +32,9 @@ class _FavoritePageState extends State<FavoritePage> {
         return Scaffold(
           body: Stack(
             children: [
-              _buildMainContent(_),
+              _.favoriteDocs.isEmpty
+                  ? const NoDataWidget(text: "저장된 이미지가 없습니다.")
+                  : _buildMainContent(_),
               if (_.loading == true) const LoadingIndicatorWidget(),
             ],
           ),

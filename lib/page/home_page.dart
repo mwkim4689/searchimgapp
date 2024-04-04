@@ -7,6 +7,7 @@ import 'package:searchimgapp/page/common_widget/loading_indicator_widget.dart';
 import '../data/entity/document_entity.dart';
 import '../util/enums.dart';
 import 'common_widget/document_item_widget.dart';
+import 'common_widget/no_data_widget.dart';
 import 'document_detail_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,7 +78,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           _buildSearchBar(context),
           const SizedBox(height: 6),
-          _buildSearchResults(_)
+          _.documentList.isEmpty
+              ? const Expanded(child: NoDataWidget(text: "검색된 이미지가 없습니다."))
+              : _buildSearchResults(_)
         ],
       ),
     );
