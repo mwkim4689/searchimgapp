@@ -62,6 +62,12 @@ class HomeController extends GetxController {
 
 
   SearchResult canSearch(bool isInitialSearch) {
+
+    // 로딩 중일 때 검색 더 안되도록 함
+    if (loading) {
+      return SearchResult.loading;
+    }
+
     // 초기 검색의 경우, 이전 결과를 지우고 새로 시작
     if (isInitialSearch) {
       documentList.clear();
